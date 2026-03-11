@@ -1,5 +1,5 @@
 -- ==========================================
--- NOXVA UI ENGINE | PREMIUM GLASS + IMAGE LOGO
+-- NOXVA UI ENGINE | PREMIUM GLASS + DECAL LOGO
 -- ==========================================
 local NoxvaLib = {}
 
@@ -35,7 +35,7 @@ function NoxvaLib:CreateWindow()
     NotifLayout.Padding = UDim.new(0, 10)
 
     -- ==========================================
-    -- LOGO MINIMIZE (IMAGE DECAL)
+    -- LOGO MINIMIZE PAKE GAMBAR LU (ANTI BLANK)
     -- ==========================================
     local OpenLogo = Instance.new("Frame", NoxvaUI)
     OpenLogo.Size = UDim2.new(0, 50, 0, 50)
@@ -49,12 +49,12 @@ function NoxvaLib:CreateWindow()
     LogoStroke.Color = Color3.fromRGB(0, 120, 255)
     LogoStroke.Thickness = 2
     
-    -- INI GAMBAR LOGO LU
     local LogoImage = Instance.new("ImageLabel", OpenLogo)
     LogoImage.Size = UDim2.new(1, 0, 1, 0)
     LogoImage.BackgroundTransparency = 1
-    LogoImage.Image = "rbxassetid://122778442788367"
-    Instance.new("UICorner", LogoImage).CornerRadius = UDim.new(1, 0) -- Biar gambarnya ikut bulet
+    -- INI JURUS SAKTINYA BREE
+    LogoImage.Image = "rbxthumb://type=Asset&id=10528567067&w=150&h=150" 
+    Instance.new("UICorner", LogoImage).CornerRadius = UDim.new(1, 0)
     
     local LogoClicker = Instance.new("TextButton", OpenLogo)
     LogoClicker.Size = UDim2.new(1, 0, 1, 0)
