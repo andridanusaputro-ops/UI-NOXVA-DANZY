@@ -1,5 +1,5 @@
 -- ==========================================
--- NOXVA UI ENGINE | PREMIUM GLASS + CAPSULE FPS
+-- NOXVA UI ENGINE | FOLDER & LABEL SUPPORT
 -- ==========================================
 local NoxvaLib = {}
 
@@ -21,9 +21,6 @@ function NoxvaLib:CreateWindow()
     NoxvaUI.ResetOnSpawn = false 
     if gethui then NoxvaUI.Parent = gethui() else pcall(function() NoxvaUI.Parent = CoreGui end) end
 
-    -- ==========================================
-    -- CONTAINER NOTIFIKASI
-    -- ==========================================
     local NotifContainer = Instance.new("Frame", NoxvaUI)
     NotifContainer.Name = "NotifContainer"
     NotifContainer.Size = UDim2.new(0, 250, 1, -20)
@@ -36,9 +33,6 @@ function NoxvaLib:CreateWindow()
     NotifLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
     NotifLayout.Padding = UDim.new(0, 10)
 
-    -- ==========================================
-    -- LOGO MINIMIZE & CAPSULE FPS
-    -- ==========================================
     local OpenLogo = Instance.new("Frame", NoxvaUI)
     OpenLogo.Size = UDim2.new(0, 50, 0, 50)
     OpenLogo.Position = UDim2.new(0.5, -25, 0, 20)
@@ -62,12 +56,11 @@ function NoxvaLib:CreateWindow()
     LogoClicker.BackgroundTransparency = 1
     LogoClicker.Text = ""
 
-    -- BACKGROUND CAPSULE BUAT FPS & PING (Otomatis Panjang)
     local FloatBg = Instance.new("Frame", OpenLogo)
     FloatBg.Position = UDim2.new(0.5, 0, 0, -35)
     FloatBg.AnchorPoint = Vector2.new(0.5, 0)
     FloatBg.Size = UDim2.new(0, 0, 0, 24)
-    FloatBg.AutomaticSize = Enum.AutomaticSize.X -- Ngikutin panjang teks
+    FloatBg.AutomaticSize = Enum.AutomaticSize.X 
     FloatBg.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     FloatBg.BackgroundTransparency = 0.15
     Instance.new("UICorner", FloatBg).CornerRadius = UDim.new(1, 0)
@@ -88,9 +81,6 @@ function NoxvaLib:CreateWindow()
     FloatingStats.Font = Enum.Font.GothamBold
     FloatingStats.TextSize = 11
 
-    -- ==========================================
-    -- MAIN FRAME
-    -- ==========================================
     local MainFrame = Instance.new("Frame", NoxvaUI)
     MainFrame.Size = UDim2.new(0, 500, 0, 350)
     MainFrame.Position = UDim2.new(0.5, -250, 0.5, -175)
@@ -186,7 +176,6 @@ function NoxvaLib:CreateWindow()
             end
         end)
     end
-    -- HANYA LogoClicker YANG BISA DIGESER (Capsule FPS aman gak ikut keseret)
     MakeDraggable(MainFrame, TopBar)
     MakeDraggable(OpenLogo, LogoClicker)
 
@@ -209,7 +198,6 @@ function NoxvaLib:CreateWindow()
     local WindowFunctions = {}
     local FirstTab = true
 
-    -- FUNGSI NOTIFIKASI
     function WindowFunctions:Notify(Title, Text, Duration)
         local NotifFrame = Instance.new("Frame", NotifContainer)
         NotifFrame.Size = UDim2.new(1, 0, 0, 60)
@@ -262,7 +250,6 @@ function NoxvaLib:CreateWindow()
         TabBtn.TextSize = 13
         TabBtn.BorderSizePixel = 0
         TabBtn.TextXAlignment = Enum.TextXAlignment.Left
-        
         local TabPad = Instance.new("UIPadding", TabBtn)
         TabPad.PaddingLeft = UDim.new(0, 15)
 
@@ -279,7 +266,6 @@ function NoxvaLib:CreateWindow()
         local PageLayout = Instance.new("UIListLayout", TabPage)
         PageLayout.SortOrder = Enum.SortOrder.LayoutOrder
         PageLayout.Padding = UDim.new(0, 6)
-        
         PageLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
             TabPage.CanvasSize = UDim2.new(0, 0, 0, PageLayout.AbsoluteContentSize.Y + 10)
         end)
@@ -293,234 +279,148 @@ function NoxvaLib:CreateWindow()
 
         local TabFunctions = {}
 
-        function TabFunctions:AddSection(TitleText)
-            local Section = Instance.new("TextLabel", TabPage)
-            Section.Size = UDim2.new(1, 0, 0, 25)
-            Section.BackgroundTransparency = 1
-            Section.Text = TitleText
-            Section.TextColor3 = Color3.fromRGB(0, 120, 255)
-            Section.Font = Enum.Font.GothamBold
-            Section.TextSize = 12
-            Section.TextXAlignment = Enum.TextXAlignment.Left
-            
-            local SecPad = Instance.new("UIPadding", Section)
-            SecPad.PaddingLeft = UDim.new(0, 5)
-        end
+        -- FITUR BARU 1: KOTAK LABEL (Buat Info & Notes)
+        function TabFunctions:AddLabel(TextContent)
+            local LblFrame = Instance.new("Frame", TabPage)
+            LblFrame.Size = UDim2.new(1, 0, 0, 0)
+            LblFrame.AutomaticSize = Enum.AutomaticSize.Y
+            LblFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+            LblFrame.BackgroundTransparency = 0.2
+            Instance.new("UICorner", LblFrame).CornerRadius = UDim.new(0, 5)
 
-        function TabFunctions:AddButton(BtnText, Callback)
-            local BtnFrame = Instance.new("Frame", TabPage)
-            BtnFrame.Size = UDim2.new(1, 0, 0, 35)
-            BtnFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            BtnFrame.BackgroundTransparency = 0.2
-            Instance.new("UICorner", BtnFrame).CornerRadius = UDim.new(0, 5)
-
-            local Btn = Instance.new("TextButton", BtnFrame)
-            Btn.Size = UDim2.new(1, 0, 1, 0)
-            Btn.BackgroundTransparency = 1
-            Btn.Text = BtnText
-            Btn.TextColor3 = Color3.fromRGB(230, 230, 230)
-            Btn.Font = Enum.Font.GothamSemibold
-            Btn.TextSize = 13
-            Btn.TextXAlignment = Enum.TextXAlignment.Left
+            local LblText = Instance.new("TextLabel", LblFrame)
+            LblText.Size = UDim2.new(1, 0, 0, 0)
+            LblText.AutomaticSize = Enum.AutomaticSize.Y
+            LblText.BackgroundTransparency = 1
+            LblText.Text = TextContent
+            LblText.TextColor3 = Color3.fromRGB(220, 220, 220)
+            LblText.Font = Enum.Font.GothamSemibold
+            LblText.TextSize = 12
+            LblText.TextWrapped = true
+            LblText.TextXAlignment = Enum.TextXAlignment.Left
+            LblText.TextYAlignment = Enum.TextYAlignment.Top
             
-            local Pad = Instance.new("UIPadding", Btn)
+            local Pad = Instance.new("UIPadding", LblText)
             Pad.PaddingLeft = UDim.new(0, 15)
+            Pad.PaddingRight = UDim.new(0, 15)
+            Pad.PaddingTop = UDim.new(0, 10)
+            Pad.PaddingBottom = UDim.new(0, 10)
 
-            Btn.MouseButton1Click:Connect(function() Callback() end)
+            local LabelItem = {}
+            function LabelItem:SetText(newText) LblText.Text = newText end
+            return LabelItem
         end
 
-        function TabFunctions:AddToggle(ToggleText, Default, Callback)
-            local State = Default or false
-            local TglFrame = Instance.new("Frame", TabPage)
-            TglFrame.Size = UDim2.new(1, 0, 0, 35)
-            TglFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            TglFrame.BackgroundTransparency = 0.2
-            Instance.new("UICorner", TglFrame).CornerRadius = UDim.new(0, 5)
+        -- FITUR BARU 2: FOLDER MENU COLLAPSIBLE (Kayak Seraphin)
+        function TabFunctions:AddFolder(TitleText)
+            local FolderFrame = Instance.new("Frame", TabPage)
+            FolderFrame.Size = UDim2.new(1, 0, 0, 35)
+            FolderFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+            FolderFrame.BackgroundTransparency = 0.2
+            FolderFrame.ClipsDescendants = true
+            Instance.new("UICorner", FolderFrame).CornerRadius = UDim.new(0, 5)
 
-            local ToggleBtn = Instance.new("TextButton", TglFrame)
-            ToggleBtn.Size = UDim2.new(1, 0, 1, 0)
-            ToggleBtn.BackgroundTransparency = 1
-            ToggleBtn.Text = ToggleText .. "   |   " .. (State and "ON" or "OFF")
-            ToggleBtn.TextColor3 = State and Color3.fromRGB(0, 255, 150) or Color3.fromRGB(230, 230, 230)
-            ToggleBtn.Font = Enum.Font.GothamSemibold
-            ToggleBtn.TextSize = 13
-            ToggleBtn.TextXAlignment = Enum.TextXAlignment.Left
+            local FolderBtn = Instance.new("TextButton", FolderFrame)
+            FolderBtn.Size = UDim2.new(1, 0, 0, 35)
+            FolderBtn.BackgroundTransparency = 1
+            FolderBtn.Text = TitleText .. "   ▼"
+            FolderBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+            FolderBtn.Font = Enum.Font.GothamBold
+            FolderBtn.TextSize = 13
+            FolderBtn.TextXAlignment = Enum.TextXAlignment.Left
+            local FPad = Instance.new("UIPadding", FolderBtn)
+            FPad.PaddingLeft = UDim.new(0, 15)
+
+            local ItemContainer = Instance.new("Frame", FolderFrame)
+            ItemContainer.Size = UDim2.new(1, 0, 1, -35)
+            ItemContainer.Position = UDim2.new(0, 0, 0, 35)
+            ItemContainer.BackgroundTransparency = 1
+
+            local ItemLayout = Instance.new("UIListLayout", ItemContainer)
+            ItemLayout.SortOrder = Enum.SortOrder.LayoutOrder
+            ItemLayout.Padding = UDim.new(0, 5)
             
-            local Pad = Instance.new("UIPadding", ToggleBtn)
-            Pad.PaddingLeft = UDim.new(0, 15)
-
-            if Default then Callback(State) end
-
-            ToggleBtn.MouseButton1Click:Connect(function()
-                State = not State
-                ToggleBtn.Text = ToggleText .. "   |   " .. (State and "ON" or "OFF")
-                ToggleBtn.TextColor3 = State and Color3.fromRGB(0, 255, 150) or Color3.fromRGB(230, 230, 230)
-                Callback(State)
-            end)
-        end
-
-        function TabFunctions:AddSlider(SliderText, Min, Max, Default, Callback)
-            local Value = Default or Min
-            local SliderContainer = Instance.new("Frame", TabPage)
-            SliderContainer.Size = UDim2.new(1, 0, 0, 50)
-            SliderContainer.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            SliderContainer.BackgroundTransparency = 0.2
-            Instance.new("UICorner", SliderContainer).CornerRadius = UDim.new(0, 5)
-
-            local Label = Instance.new("TextLabel", SliderContainer)
-            Label.Size = UDim2.new(1, -30, 0, 20)
-            Label.Position = UDim2.new(0, 15, 0, 5)
-            Label.BackgroundTransparency = 1
-            Label.Text = SliderText .. " : " .. tostring(Value)
-            Label.TextColor3 = Color3.fromRGB(230, 230, 230)
-            Label.Font = Enum.Font.GothamSemibold
-            Label.TextSize = 12
-            Label.TextXAlignment = Enum.TextXAlignment.Left
-
-            local SliderBack = Instance.new("TextButton", SliderContainer)
-            SliderBack.Size = UDim2.new(1, -30, 0, 6)
-            SliderBack.Position = UDim2.new(0, 15, 0, 32)
-            SliderBack.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-            SliderBack.Text = ""
-            Instance.new("UICorner", SliderBack).CornerRadius = UDim.new(1, 0)
-
-            local SliderFill = Instance.new("Frame", SliderBack)
-            SliderFill.Size = UDim2.new((Value - Min) / (Max - Min), 0, 1, 0)
-            SliderFill.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
-            Instance.new("UICorner", SliderFill).CornerRadius = UDim.new(1, 0)
-
-            local dragging = false
-            local function updateSlider(input)
-                local pos = math.clamp((input.Position.X - SliderBack.AbsolutePosition.X) / SliderBack.AbsoluteSize.X, 0, 1)
-                Value = math.floor(Min + (Max - Min) * pos)
-                SliderFill.Size = UDim2.new(pos, 0, 1, 0)
-                Label.Text = SliderText .. " : " .. tostring(Value)
-                Callback(Value)
-            end
-
-            SliderBack.InputBegan:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                    dragging = true; updateSlider(input)
-                end
-            end)
-            UserInputService.InputChanged:Connect(function(input)
-                if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-                    updateSlider(input)
-                end
-            end)
-            UserInputService.InputEnded:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                    dragging = false
-                end
-            end)
-            
-            Callback(Value)
-        end
-
-        function TabFunctions:AddDropdown(DropText, Options, Callback)
-            local DropdownFrame = Instance.new("Frame", TabPage)
-            DropdownFrame.Size = UDim2.new(1, 0, 0, 35)
-            DropdownFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            DropdownFrame.BackgroundTransparency = 0.2
-            DropdownFrame.ClipsDescendants = true
-            Instance.new("UICorner", DropdownFrame).CornerRadius = UDim.new(0, 5)
-
-            local DropButton = Instance.new("TextButton", DropdownFrame)
-            DropButton.Size = UDim2.new(1, 0, 0, 35)
-            DropButton.BackgroundTransparency = 1
-            DropButton.Text = DropText .. " :  " .. tostring(Options[1] or "")
-            DropButton.TextColor3 = Color3.fromRGB(230, 230, 230)
-            DropButton.Font = Enum.Font.GothamSemibold
-            DropButton.TextSize = 13
-            DropButton.TextXAlignment = Enum.TextXAlignment.Left
-            
-            local Pad = Instance.new("UIPadding", DropButton)
-            Pad.PaddingLeft = UDim.new(0, 15)
-
-            local DropContainer = Instance.new("ScrollingFrame", DropdownFrame)
-            DropContainer.Size = UDim2.new(1, 0, 1, -35)
-            DropContainer.Position = UDim2.new(0, 0, 0, 35)
-            DropContainer.BackgroundTransparency = 1
-            DropContainer.ScrollBarThickness = 0
-            
-            local DropLayout = Instance.new("UIListLayout", DropContainer)
-            DropLayout.SortOrder = Enum.SortOrder.LayoutOrder
+            local CPad = Instance.new("UIPadding", ItemContainer)
+            CPad.PaddingTop = UDim.new(0, 5)
+            CPad.PaddingBottom = UDim.new(0, 5)
 
             local isOpen = false
-            DropButton.MouseButton1Click:Connect(function()
+            FolderBtn.MouseButton1Click:Connect(function()
                 isOpen = not isOpen
+                FolderBtn.Text = TitleText .. (isOpen and "   ▲" or "   ▼")
                 if isOpen then
-                    local frameHeight = 35 + (#Options * 30)
-                    if frameHeight > 150 then frameHeight = 150 end
-                    DropdownFrame.Size = UDim2.new(1, 0, 0, frameHeight)
-                    DropContainer.CanvasSize = UDim2.new(0, 0, 0, #Options * 30)
+                    FolderFrame.Size = UDim2.new(1, 0, 0, 35 + ItemLayout.AbsoluteContentSize.Y + 10)
                 else
-                    DropdownFrame.Size = UDim2.new(1, 0, 0, 35)
+                    FolderFrame.Size = UDim2.new(1, 0, 0, 35)
                 end
             end)
 
-            for _, option in ipairs(Options) do
-                local OptBtn = Instance.new("TextButton", DropContainer)
-                OptBtn.Size = UDim2.new(1, 0, 0, 30)
-                OptBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-                OptBtn.BackgroundTransparency = 0.5
-                OptBtn.Text = tostring(option)
-                OptBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
-                OptBtn.Font = Enum.Font.Gotham
-                OptBtn.TextSize = 13
-                OptBtn.BorderSizePixel = 0
-                OptBtn.TextXAlignment = Enum.TextXAlignment.Left
-                
-                local OptPad = Instance.new("UIPadding", OptBtn)
-                OptPad.PaddingLeft = UDim.new(0, 25)
-                
-                OptBtn.MouseButton1Click:Connect(function()
-                    DropButton.Text = DropText .. " :  " .. tostring(option)
-                    isOpen = false
-                    DropdownFrame.Size = UDim2.new(1, 0, 0, 35)
-                    Callback(option)
+            ItemLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+                if isOpen then FolderFrame.Size = UDim2.new(1, 0, 0, 35 + ItemLayout.AbsoluteContentSize.Y + 10) end
+            end)
+
+            local FolderFuncs = {}
+
+            -- Toggle di dalam Folder
+            function FolderFuncs:AddToggle(ToggleText, Default, Callback)
+                local State = Default or false
+                local TglFrame = Instance.new("Frame", ItemContainer)
+                TglFrame.Size = UDim2.new(1, -20, 0, 35)
+                TglFrame.Position = UDim2.new(0, 10, 0, 0)
+                TglFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+                TglFrame.BackgroundTransparency = 0.5
+                Instance.new("UICorner", TglFrame).CornerRadius = UDim.new(0, 5)
+
+                local ToggleBtn = Instance.new("TextButton", TglFrame)
+                ToggleBtn.Size = UDim2.new(1, 0, 1, 0)
+                ToggleBtn.BackgroundTransparency = 1
+                ToggleBtn.Text = ToggleText .. "   |   " .. (State and "ON" or "OFF")
+                ToggleBtn.TextColor3 = State and Color3.fromRGB(0, 255, 150) or Color3.fromRGB(230, 230, 230)
+                ToggleBtn.Font = Enum.Font.GothamSemibold
+                ToggleBtn.TextSize = 13
+                ToggleBtn.TextXAlignment = Enum.TextXAlignment.Left
+                local Pad = Instance.new("UIPadding", ToggleBtn)
+                Pad.PaddingLeft = UDim.new(0, 15)
+
+                if Default then Callback(State) end
+                ToggleBtn.MouseButton1Click:Connect(function()
+                    State = not State
+                    ToggleBtn.Text = ToggleText .. "   |   " .. (State and "ON" or "OFF")
+                    ToggleBtn.TextColor3 = State and Color3.fromRGB(0, 255, 150) or Color3.fromRGB(230, 230, 230)
+                    Callback(State)
                 end)
             end
-            if Options[1] then Callback(Options[1]) end
-        end
 
-        function TabFunctions:AddTextbox(BoxText, Placeholder, Callback)
-            local BoxFrame = Instance.new("Frame", TabPage)
-            BoxFrame.Size = UDim2.new(1, 0, 0, 40)
-            BoxFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-            BoxFrame.BackgroundTransparency = 0.2
-            Instance.new("UICorner", BoxFrame).CornerRadius = UDim.new(0, 5)
+            -- Label/Note di dalam Folder
+            function FolderFuncs:AddLabel(TextContent)
+                local LblFrame = Instance.new("Frame", ItemContainer)
+                LblFrame.Size = UDim2.new(1, -20, 0, 0)
+                LblFrame.AutomaticSize = Enum.AutomaticSize.Y
+                LblFrame.Position = UDim2.new(0, 10, 0, 0)
+                LblFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+                LblFrame.BackgroundTransparency = 0.8
+                Instance.new("UICorner", LblFrame).CornerRadius = UDim.new(0, 5)
 
-            local BoxLabel = Instance.new("TextLabel", BoxFrame)
-            BoxLabel.Size = UDim2.new(0.4, 0, 1, 0)
-            BoxLabel.Position = UDim2.new(0, 15, 0, 0)
-            BoxLabel.BackgroundTransparency = 1
-            BoxLabel.Text = BoxText
-            BoxLabel.TextColor3 = Color3.fromRGB(230, 230, 230)
-            BoxLabel.Font = Enum.Font.GothamSemibold
-            BoxLabel.TextSize = 13
-            BoxLabel.TextXAlignment = Enum.TextXAlignment.Left
-
-            local TextBox = Instance.new("TextBox", BoxFrame)
-            TextBox.Size = UDim2.new(0.55, -20, 0, 28)
-            TextBox.Position = UDim2.new(0.45, 5, 0, 6)
-            TextBox.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-            TextBox.PlaceholderText = Placeholder
-            TextBox.Text = ""
-            TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-            TextBox.Font = Enum.Font.Gotham
-            TextBox.TextSize = 12
-            Instance.new("UICorner", TextBox).CornerRadius = UDim.new(0, 5)
-
-            TextBox.FocusLost:Connect(function() Callback(TextBox.Text) end)
+                local LblText = Instance.new("TextLabel", LblFrame)
+                LblText.Size = UDim2.new(1, 0, 0, 0)
+                LblText.AutomaticSize = Enum.AutomaticSize.Y
+                LblText.BackgroundTransparency = 1
+                LblText.Text = TextContent
+                LblText.TextColor3 = Color3.fromRGB(200, 200, 200)
+                LblText.Font = Enum.Font.GothamSemibold
+                LblText.TextSize = 11
+                LblText.TextWrapped = true
+                LblText.TextXAlignment = Enum.TextXAlignment.Left
+                local LPad = Instance.new("UIPadding", LblText)
+                LPad.PaddingLeft = UDim.new(0, 15); LPad.PaddingRight = UDim.new(0, 15)
+                LPad.PaddingTop = UDim.new(0, 8); LPad.PaddingBottom = UDim.new(0, 8)
+            end
+            return FolderFuncs
         end
 
         return TabFunctions
     end
-
-    -- AUTO NOTIF PAS DIEKSEKUSI
     WindowFunctions:Notify("NOXVA HUB", "Execute Success! Selamat datang.", 4)
-
     return WindowFunctions
 end
 
