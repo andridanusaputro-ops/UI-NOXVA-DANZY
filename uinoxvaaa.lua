@@ -1,3 +1,6 @@
+-- ==========================================
+-- NOXVA UI ENGINE | AESTHETIC UPDATE
+-- ==========================================
 local NoxvaLib = {}
 
 function NoxvaLib:CreateWindow()
@@ -166,8 +169,12 @@ function NoxvaLib:CreateWindow()
         TabBtn.Text = TabName
         TabBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
         TabBtn.Font = Enum.Font.GothamSemibold
-        TabBtn.TextSize = 14
+        TabBtn.TextSize = 13
         TabBtn.BorderSizePixel = 0
+        TabBtn.TextXAlignment = Enum.TextXAlignment.Left -- Rata Kiri
+        
+        local TabPad = Instance.new("UIPadding", TabBtn)
+        TabPad.PaddingLeft = UDim.new(0, 15) -- Jarak dari pinggir
 
         local TabPage = Instance.new("ScrollingFrame", ContentArea)
         TabPage.Size = UDim2.new(1, -20, 1, -20)
@@ -181,7 +188,7 @@ function NoxvaLib:CreateWindow()
 
         local PageLayout = Instance.new("UIListLayout", TabPage)
         PageLayout.SortOrder = Enum.SortOrder.LayoutOrder
-        PageLayout.Padding = UDim.new(0, 5)
+        PageLayout.Padding = UDim.new(0, 6)
         
         PageLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
             TabPage.CanvasSize = UDim2.new(0, 0, 0, PageLayout.AbsoluteContentSize.Y + 10)
@@ -196,6 +203,23 @@ function NoxvaLib:CreateWindow()
 
         local TabFunctions = {}
 
+        -- =======================================
+        -- FITUR BARU: BIKIN JUDUL (SECTION LABEL)
+        -- =======================================
+        function TabFunctions:AddSection(TitleText)
+            local Section = Instance.new("TextLabel", TabPage)
+            Section.Size = UDim2.new(1, 0, 0, 25)
+            Section.BackgroundTransparency = 1
+            Section.Text = TitleText
+            Section.TextColor3 = Color3.fromRGB(0, 120, 255) -- Biru Premium
+            Section.Font = Enum.Font.GothamBold
+            Section.TextSize = 12
+            Section.TextXAlignment = Enum.TextXAlignment.Left
+            
+            local SecPad = Instance.new("UIPadding", Section)
+            SecPad.PaddingLeft = UDim.new(0, 5)
+        end
+
         function TabFunctions:AddButton(BtnText, Callback)
             local Btn = Instance.new("TextButton", TabPage)
             Btn.Size = UDim2.new(1, 0, 0, 35)
@@ -203,8 +227,13 @@ function NoxvaLib:CreateWindow()
             Btn.Text = BtnText
             Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
             Btn.Font = Enum.Font.GothamBold
-            Btn.TextSize = 14
+            Btn.TextSize = 13
+            Btn.TextXAlignment = Enum.TextXAlignment.Left -- Rata Kiri
             Instance.new("UICorner", Btn).CornerRadius = UDim.new(0, 5)
+            
+            local Pad = Instance.new("UIPadding", Btn)
+            Pad.PaddingLeft = UDim.new(0, 10)
+
             Btn.MouseButton1Click:Connect(function() Callback() end)
         end
 
@@ -213,17 +242,21 @@ function NoxvaLib:CreateWindow()
             local ToggleBtn = Instance.new("TextButton", TabPage)
             ToggleBtn.Size = UDim2.new(1, 0, 0, 35)
             ToggleBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-            ToggleBtn.Text = ToggleText .. " : " .. (State and "ON" or "OFF")
+            ToggleBtn.Text = ToggleText .. "   |   " .. (State and "ON" or "OFF")
             ToggleBtn.TextColor3 = State and Color3.fromRGB(0, 255, 150) or Color3.fromRGB(255, 255, 255)
             ToggleBtn.Font = Enum.Font.GothamBold
-            ToggleBtn.TextSize = 14
+            ToggleBtn.TextSize = 13
+            ToggleBtn.TextXAlignment = Enum.TextXAlignment.Left -- Rata Kiri
             Instance.new("UICorner", ToggleBtn).CornerRadius = UDim.new(0, 5)
+
+            local Pad = Instance.new("UIPadding", ToggleBtn)
+            Pad.PaddingLeft = UDim.new(0, 10)
 
             if Default then Callback(State) end
 
             ToggleBtn.MouseButton1Click:Connect(function()
                 State = not State
-                ToggleBtn.Text = ToggleText .. " : " .. (State and "ON" or "OFF")
+                ToggleBtn.Text = ToggleText .. "   |   " .. (State and "ON" or "OFF")
                 ToggleBtn.TextColor3 = State and Color3.fromRGB(0, 255, 150) or Color3.fromRGB(255, 255, 255)
                 Callback(State)
             end)
@@ -238,7 +271,7 @@ function NoxvaLib:CreateWindow()
 
             local Label = Instance.new("TextLabel", SliderContainer)
             Label.Size = UDim2.new(1, -10, 0, 20)
-            Label.Position = UDim2.new(0, 5, 0, 5)
+            Label.Position = UDim2.new(0, 10, 0, 5)
             Label.BackgroundTransparency = 1
             Label.Text = SliderText .. " : " .. tostring(Value)
             Label.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -247,8 +280,8 @@ function NoxvaLib:CreateWindow()
             Label.TextXAlignment = Enum.TextXAlignment.Left
 
             local SliderBack = Instance.new("TextButton", SliderContainer)
-            SliderBack.Size = UDim2.new(1, -10, 0, 10)
-            SliderBack.Position = UDim2.new(0, 5, 0, 30)
+            SliderBack.Size = UDim2.new(1, -20, 0, 8)
+            SliderBack.Position = UDim2.new(0, 10, 0, 30)
             SliderBack.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
             SliderBack.Text = ""
             Instance.new("UICorner", SliderBack).CornerRadius = UDim.new(1, 0)
@@ -299,10 +332,14 @@ function NoxvaLib:CreateWindow()
             local DropButton = Instance.new("TextButton", DropdownFrame)
             DropButton.Size = UDim2.new(1, 0, 0, 35)
             DropButton.BackgroundTransparency = 1
-            DropButton.Text = DropText .. " : " .. tostring(Options[1] or "")
+            DropButton.Text = DropText .. " :  " .. tostring(Options[1] or "")
             DropButton.TextColor3 = Color3.fromRGB(255, 255, 255)
             DropButton.Font = Enum.Font.GothamBold
-            DropButton.TextSize = 14
+            DropButton.TextSize = 13
+            DropButton.TextXAlignment = Enum.TextXAlignment.Left
+            
+            local Pad = Instance.new("UIPadding", DropButton)
+            Pad.PaddingLeft = UDim.new(0, 10)
 
             local DropContainer = Instance.new("ScrollingFrame", DropdownFrame)
             DropContainer.Size = UDim2.new(1, 0, 1, -35)
@@ -335,9 +372,13 @@ function NoxvaLib:CreateWindow()
                 OptBtn.Font = Enum.Font.Gotham
                 OptBtn.TextSize = 13
                 OptBtn.BorderSizePixel = 0
+                OptBtn.TextXAlignment = Enum.TextXAlignment.Left
+                
+                local OptPad = Instance.new("UIPadding", OptBtn)
+                OptPad.PaddingLeft = UDim.new(0, 20) -- Agak masuk ke dalem dikit
                 
                 OptBtn.MouseButton1Click:Connect(function()
-                    DropButton.Text = DropText .. " : " .. tostring(option)
+                    DropButton.Text = DropText .. " :  " .. tostring(option)
                     isOpen = false
                     DropdownFrame.Size = UDim2.new(1, 0, 0, 35)
                     Callback(option)
@@ -354,18 +395,18 @@ function NoxvaLib:CreateWindow()
             Instance.new("UICorner", BoxFrame).CornerRadius = UDim.new(0, 5)
 
             local BoxLabel = Instance.new("TextLabel", BoxFrame)
-            BoxLabel.Size = UDim2.new(0.5, -10, 1, 0)
+            BoxLabel.Size = UDim2.new(0.4, 0, 1, 0)
             BoxLabel.Position = UDim2.new(0, 10, 0, 0)
             BoxLabel.BackgroundTransparency = 1
             BoxLabel.Text = BoxText
             BoxLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
             BoxLabel.Font = Enum.Font.GothamBold
-            BoxLabel.TextSize = 14
+            BoxLabel.TextSize = 13
             BoxLabel.TextXAlignment = Enum.TextXAlignment.Left
 
             local TextBox = Instance.new("TextBox", BoxFrame)
-            TextBox.Size = UDim2.new(0.5, -10, 0, 30)
-            TextBox.Position = UDim2.new(0.5, 0, 0, 5)
+            TextBox.Size = UDim2.new(0.55, -10, 0, 30)
+            TextBox.Position = UDim2.new(0.45, 0, 0, 5)
             TextBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
             TextBox.PlaceholderText = Placeholder
             TextBox.Text = ""
