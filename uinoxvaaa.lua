@@ -1,5 +1,5 @@
 -- ==========================================
--- NOXVA UI ENGINE | PREMIUM GLASS & AESTHETIC
+-- NOXVA UI ENGINE | PREMIUM GLASS + IMAGE LOGO
 -- ==========================================
 local NoxvaLib = {}
 
@@ -8,7 +8,7 @@ function NoxvaLib:CreateWindow()
     local RunService = game:GetService("RunService")
     local UserInputService = game:GetService("UserInputService")
     local StatsService = game:GetService("Stats")
-    local TweenService = game:GetService("TweenService") -- Tambahan buat animasi Notif
+    local TweenService = game:GetService("TweenService") 
 
     if gethui then
         if gethui():FindFirstChild("NoxvaHub_Pure") then gethui().NoxvaHub_Pure:Destroy() end
@@ -21,7 +21,7 @@ function NoxvaLib:CreateWindow()
     NoxvaUI.ResetOnSpawn = false 
     if gethui then NoxvaUI.Parent = gethui() else pcall(function() NoxvaUI.Parent = CoreGui end) end
 
-    -- Container buat Notifikasi di pojok kanan bawah
+    -- Container Notifikasi
     local NotifContainer = Instance.new("Frame", NoxvaUI)
     NotifContainer.Name = "NotifContainer"
     NotifContainer.Size = UDim2.new(0, 250, 1, -20)
@@ -34,6 +34,9 @@ function NoxvaLib:CreateWindow()
     NotifLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
     NotifLayout.Padding = UDim.new(0, 10)
 
+    -- ==========================================
+    -- LOGO MINIMIZE (IMAGE DECAL)
+    -- ==========================================
     local OpenLogo = Instance.new("Frame", NoxvaUI)
     OpenLogo.Size = UDim2.new(0, 50, 0, 50)
     OpenLogo.Position = UDim2.new(0.5, -25, 0, 20)
@@ -46,13 +49,12 @@ function NoxvaLib:CreateWindow()
     LogoStroke.Color = Color3.fromRGB(0, 120, 255)
     LogoStroke.Thickness = 2
     
-    local LogoText = Instance.new("TextLabel", OpenLogo)
-    LogoText.Size = UDim2.new(1, 0, 1, 0)
-    LogoText.BackgroundTransparency = 1
-    LogoText.Text = "NX"
-    LogoText.TextColor3 = Color3.fromRGB(255, 255, 255)
-    LogoText.Font = Enum.Font.GothamBold
-    LogoText.TextSize = 22
+    -- INI GAMBAR LOGO LU
+    local LogoImage = Instance.new("ImageLabel", OpenLogo)
+    LogoImage.Size = UDim2.new(1, 0, 1, 0)
+    LogoImage.BackgroundTransparency = 1
+    LogoImage.Image = "rbxassetid://122778442788367"
+    Instance.new("UICorner", LogoImage).CornerRadius = UDim.new(1, 0) -- Biar gambarnya ikut bulet
     
     local LogoClicker = Instance.new("TextButton", OpenLogo)
     LogoClicker.Size = UDim2.new(1, 0, 1, 0)
@@ -68,12 +70,12 @@ function NoxvaLib:CreateWindow()
     FloatingStats.TextSize = 12
     FloatingStats.TextStrokeTransparency = 0.5
 
-    -- MAIN FRAME (Transparan Dikit)
+    -- MAIN FRAME
     local MainFrame = Instance.new("Frame", NoxvaUI)
     MainFrame.Size = UDim2.new(0, 500, 0, 350)
     MainFrame.Position = UDim2.new(0.5, -250, 0.5, -175)
     MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-    MainFrame.BackgroundTransparency = 0.15 -- EFEK GLASS
+    MainFrame.BackgroundTransparency = 0.15 
     Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 8)
     
     local MainStroke = Instance.new("UIStroke", MainFrame)
@@ -186,15 +188,13 @@ function NoxvaLib:CreateWindow()
     local WindowFunctions = {}
     local FirstTab = true
 
-    -- =======================================
-    -- FITUR NOTIFIKASI
-    -- =======================================
+    -- FUNGSI NOTIFIKASI
     function WindowFunctions:Notify(Title, Text, Duration)
         local NotifFrame = Instance.new("Frame", NotifContainer)
         NotifFrame.Size = UDim2.new(1, 0, 0, 60)
         NotifFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
         NotifFrame.BackgroundTransparency = 0.1
-        NotifFrame.Position = UDim2.new(1, 300, 0, 0) -- Mulai dari luar layar
+        NotifFrame.Position = UDim2.new(1, 300, 0, 0)
         Instance.new("UICorner", NotifFrame).CornerRadius = UDim.new(0, 5)
 
         local NStroke = Instance.new("UIStroke", NotifFrame)
@@ -222,10 +222,8 @@ function NoxvaLib:CreateWindow()
         NotifDesc.TextXAlignment = Enum.TextXAlignment.Left
         NotifDesc.TextWrapped = true
 
-        -- Animasi masuk
         TweenService:Create(NotifFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Position = UDim2.new(0, 0, 0, 0)}):Play()
 
-        -- Animasi keluar & hapus
         task.delay(Duration or 3, function()
             local fadeOut = TweenService:Create(NotifFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.In), {Position = UDim2.new(1, 300, 0, 0)})
             fadeOut:Play()
@@ -251,7 +249,7 @@ function NoxvaLib:CreateWindow()
         TabPage.Size = UDim2.new(1, -20, 1, -20)
         TabPage.Position = UDim2.new(0, 10, 0, 10)
         TabPage.BackgroundTransparency = 1
-        TabPage.ScrollBarThickness = 0 -- Ilangin scrollbar biar estetik
+        TabPage.ScrollBarThickness = 0 
         TabPage.Visible = FirstTab
         TabPage.BorderSizePixel = 0
 
