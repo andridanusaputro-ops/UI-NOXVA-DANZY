@@ -1,5 +1,5 @@
 -- ==========================================
--- NOXVA UI ENGINE | FULL FOLDER + DOUBLE BUTTON SUPPORT
+-- NOXVA UI ENGINE | FINAL PREMIUM BUILD
 -- ==========================================
 local NoxvaLib = {}
 
@@ -237,7 +237,6 @@ function NoxvaLib:CreateWindow()
 
         local TabFunctions = {}
 
-        -- FITUR BARU: TOMBOL SEBELAHAN (DOUBLE BUTTON)
         function TabFunctions:AddDoubleButton(Btn1Text, Btn1Callback, Btn2Text, Btn2Callback)
             local Container = Instance.new("Frame", TabPage)
             Container.Size = UDim2.new(1, 0, 0, 35)
@@ -288,8 +287,7 @@ function NoxvaLib:CreateWindow()
             LblText.TextSize = 12; LblText.TextWrapped = true
             LblText.TextXAlignment = Enum.TextXAlignment.Left; LblText.TextYAlignment = Enum.TextYAlignment.Top
             local Pad = Instance.new("UIPadding", LblText)
-            Pad.PaddingLeft = UDim.new(0, 15); Pad.PaddingRight = UDim.new(0, 15)
-            Pad.PaddingTop = UDim.new(0, 10); Pad.PaddingBottom = UDim.new(0, 10)
+            Pad.PaddingLeft = UDim.new(0, 15); Pad.PaddingRight = UDim.new(0, 15); Pad.PaddingTop = UDim.new(0, 10); Pad.PaddingBottom = UDim.new(0, 10)
             
             local LabelItem = {}
             function LabelItem:SetText(newText) LblText.Text = newText end
@@ -302,8 +300,7 @@ function NoxvaLib:CreateWindow()
             BtnFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35); BtnFrame.BackgroundTransparency = 0.2
             Instance.new("UICorner", BtnFrame).CornerRadius = UDim.new(0, 5)
             local Btn = Instance.new("TextButton", BtnFrame)
-            Btn.Size = UDim2.new(1, 0, 1, 0); Btn.BackgroundTransparency = 1
-            Btn.Text = BtnText; Btn.TextColor3 = Color3.fromRGB(230, 230, 230)
+            Btn.Size = UDim2.new(1, 0, 1, 0); Btn.BackgroundTransparency = 1; Btn.Text = BtnText; Btn.TextColor3 = Color3.fromRGB(230, 230, 230)
             Btn.Font = Enum.Font.GothamSemibold; Btn.TextSize = 13; Btn.TextXAlignment = Enum.TextXAlignment.Left
             Instance.new("UIPadding", Btn).PaddingLeft = UDim.new(0, 15)
             Btn.MouseButton1Click:Connect(function() Callback() end)
@@ -312,8 +309,7 @@ function NoxvaLib:CreateWindow()
         function TabFunctions:AddToggle(ToggleText, Default, Callback)
             local State = Default or false
             local TglFrame = Instance.new("Frame", TabPage)
-            TglFrame.Size = UDim2.new(1, 0, 0, 35)
-            TglFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35); TglFrame.BackgroundTransparency = 0.2
+            TglFrame.Size = UDim2.new(1, 0, 0, 35); TglFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35); TglFrame.BackgroundTransparency = 0.2
             Instance.new("UICorner", TglFrame).CornerRadius = UDim.new(0, 5)
             local ToggleBtn = Instance.new("TextButton", TglFrame)
             ToggleBtn.Size = UDim2.new(1, 0, 1, 0); ToggleBtn.BackgroundTransparency = 1
@@ -323,31 +319,22 @@ function NoxvaLib:CreateWindow()
             Instance.new("UIPadding", ToggleBtn).PaddingLeft = UDim.new(0, 15)
             if Default then Callback(State) end
             ToggleBtn.MouseButton1Click:Connect(function()
-                State = not State
-                ToggleBtn.Text = ToggleText .. "   |   " .. (State and "ON" or "OFF")
-                ToggleBtn.TextColor3 = State and Color3.fromRGB(0, 255, 150) or Color3.fromRGB(230, 230, 230)
-                Callback(State)
+                State = not State; ToggleBtn.Text = ToggleText .. "   |   " .. (State and "ON" or "OFF")
+                ToggleBtn.TextColor3 = State and Color3.fromRGB(0, 255, 150) or Color3.fromRGB(230, 230, 230); Callback(State)
             end)
         end
 
         function TabFunctions:AddDropdown(DropText, Options, Callback)
             local DropdownFrame = Instance.new("Frame", TabPage)
-            DropdownFrame.Size = UDim2.new(1, 0, 0, 35)
-            DropdownFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35); DropdownFrame.BackgroundTransparency = 0.2
-            DropdownFrame.ClipsDescendants = true
+            DropdownFrame.Size = UDim2.new(1, 0, 0, 35); DropdownFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35); DropdownFrame.BackgroundTransparency = 0.2; DropdownFrame.ClipsDescendants = true
             Instance.new("UICorner", DropdownFrame).CornerRadius = UDim.new(0, 5)
             local DropButton = Instance.new("TextButton", DropdownFrame)
-            DropButton.Size = UDim2.new(1, 0, 0, 35); DropButton.BackgroundTransparency = 1
-            DropButton.Text = DropText .. " :  " .. tostring(Options[1] or "")
-            DropButton.TextColor3 = Color3.fromRGB(230, 230, 230)
-            DropButton.Font = Enum.Font.GothamSemibold; DropButton.TextSize = 13; DropButton.TextXAlignment = Enum.TextXAlignment.Left
+            DropButton.Size = UDim2.new(1, 0, 0, 35); DropButton.BackgroundTransparency = 1; DropButton.Text = DropText .. " :  " .. tostring(Options[1] or ""); DropButton.TextColor3 = Color3.fromRGB(230, 230, 230); DropButton.Font = Enum.Font.GothamSemibold; DropButton.TextSize = 13; DropButton.TextXAlignment = Enum.TextXAlignment.Left
             Instance.new("UIPadding", DropButton).PaddingLeft = UDim.new(0, 15)
 
             local DropContainer = Instance.new("ScrollingFrame", DropdownFrame)
-            DropContainer.Size = UDim2.new(1, 0, 1, -35); DropContainer.Position = UDim2.new(0, 0, 0, 35)
-            DropContainer.BackgroundTransparency = 1; DropContainer.ScrollBarThickness = 0
-            local DropLayout = Instance.new("UIListLayout", DropContainer)
-            DropLayout.SortOrder = Enum.SortOrder.LayoutOrder
+            DropContainer.Size = UDim2.new(1, 0, 1, -35); DropContainer.Position = UDim2.new(0, 0, 0, 35); DropContainer.BackgroundTransparency = 1; DropContainer.ScrollBarThickness = 0
+            Instance.new("UIListLayout", DropContainer).SortOrder = Enum.SortOrder.LayoutOrder
 
             local isOpen = false
             DropButton.MouseButton1Click:Connect(function()
@@ -360,10 +347,7 @@ function NoxvaLib:CreateWindow()
 
             for _, option in ipairs(Options) do
                 local OptBtn = Instance.new("TextButton", DropContainer)
-                OptBtn.Size = UDim2.new(1, 0, 0, 30); OptBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-                OptBtn.BackgroundTransparency = 0.5; OptBtn.Text = tostring(option)
-                OptBtn.TextColor3 = Color3.fromRGB(200, 200, 200); OptBtn.Font = Enum.Font.Gotham
-                OptBtn.TextSize = 13; OptBtn.BorderSizePixel = 0; OptBtn.TextXAlignment = Enum.TextXAlignment.Left
+                OptBtn.Size = UDim2.new(1, 0, 0, 30); OptBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 45); OptBtn.BackgroundTransparency = 0.5; OptBtn.Text = tostring(option); OptBtn.TextColor3 = Color3.fromRGB(200, 200, 200); OptBtn.Font = Enum.Font.Gotham; OptBtn.TextSize = 13; OptBtn.BorderSizePixel = 0; OptBtn.TextXAlignment = Enum.TextXAlignment.Left
                 Instance.new("UIPadding", OptBtn).PaddingLeft = UDim.new(0, 25)
                 OptBtn.MouseButton1Click:Connect(function()
                     DropButton.Text = DropText .. " :  " .. tostring(option)
@@ -375,49 +359,34 @@ function NoxvaLib:CreateWindow()
 
         function TabFunctions:AddTextbox(BoxText, Placeholder, Callback)
             local BoxFrame = Instance.new("Frame", TabPage)
-            BoxFrame.Size = UDim2.new(1, 0, 0, 40)
-            BoxFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35); BoxFrame.BackgroundTransparency = 0.2
+            BoxFrame.Size = UDim2.new(1, 0, 0, 40); BoxFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35); BoxFrame.BackgroundTransparency = 0.2
             Instance.new("UICorner", BoxFrame).CornerRadius = UDim.new(0, 5)
             local BoxLabel = Instance.new("TextLabel", BoxFrame)
-            BoxLabel.Size = UDim2.new(0.4, 0, 1, 0); BoxLabel.Position = UDim2.new(0, 15, 0, 0)
-            BoxLabel.BackgroundTransparency = 1; BoxLabel.Text = BoxText
-            BoxLabel.TextColor3 = Color3.fromRGB(230, 230, 230); BoxLabel.Font = Enum.Font.GothamSemibold
-            BoxLabel.TextSize = 13; BoxLabel.TextXAlignment = Enum.TextXAlignment.Left
+            BoxLabel.Size = UDim2.new(0.4, 0, 1, 0); BoxLabel.Position = UDim2.new(0, 15, 0, 0); BoxLabel.BackgroundTransparency = 1; BoxLabel.Text = BoxText; BoxLabel.TextColor3 = Color3.fromRGB(230, 230, 230); BoxLabel.Font = Enum.Font.GothamSemibold; BoxLabel.TextSize = 13; BoxLabel.TextXAlignment = Enum.TextXAlignment.Left
             local TextBox = Instance.new("TextBox", BoxFrame)
-            TextBox.Size = UDim2.new(0.55, -20, 0, 28); TextBox.Position = UDim2.new(0.45, 5, 0, 6)
-            TextBox.BackgroundColor3 = Color3.fromRGB(20, 20, 20); TextBox.PlaceholderText = Placeholder
-            TextBox.Text = ""; TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-            TextBox.Font = Enum.Font.Gotham; TextBox.TextSize = 12
+            TextBox.Size = UDim2.new(0.55, -20, 0, 28); TextBox.Position = UDim2.new(0.45, 5, 0, 6); TextBox.BackgroundColor3 = Color3.fromRGB(20, 20, 20); TextBox.PlaceholderText = Placeholder; TextBox.Text = ""; TextBox.TextColor3 = Color3.fromRGB(255, 255, 255); TextBox.Font = Enum.Font.Gotham; TextBox.TextSize = 12
             Instance.new("UICorner", TextBox).CornerRadius = UDim.new(0, 5)
             TextBox.FocusLost:Connect(function() Callback(TextBox.Text) end)
         end
 
-        -- FOLDER SYSTEM (Udah ada dari sebelumnya)
         function TabFunctions:AddFolder(TitleText)
             local FolderFrame = Instance.new("Frame", TabPage)
-            FolderFrame.Size = UDim2.new(1, 0, 0, 35)
-            FolderFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30); FolderFrame.BackgroundTransparency = 0.2
-            FolderFrame.ClipsDescendants = true
+            FolderFrame.Size = UDim2.new(1, 0, 0, 35); FolderFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30); FolderFrame.BackgroundTransparency = 0.2; FolderFrame.ClipsDescendants = true
             Instance.new("UICorner", FolderFrame).CornerRadius = UDim.new(0, 5)
 
             local FolderBtn = Instance.new("TextButton", FolderFrame)
-            FolderBtn.Size = UDim2.new(1, 0, 0, 35); FolderBtn.BackgroundTransparency = 1
-            FolderBtn.Text = TitleText .. "   ▼"; FolderBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-            FolderBtn.Font = Enum.Font.GothamBold; FolderBtn.TextSize = 13; FolderBtn.TextXAlignment = Enum.TextXAlignment.Left
+            FolderBtn.Size = UDim2.new(1, 0, 0, 35); FolderBtn.BackgroundTransparency = 1; FolderBtn.Text = TitleText .. "   ▼"; FolderBtn.TextColor3 = Color3.fromRGB(255, 255, 255); FolderBtn.Font = Enum.Font.GothamBold; FolderBtn.TextSize = 13; FolderBtn.TextXAlignment = Enum.TextXAlignment.Left
             Instance.new("UIPadding", FolderBtn).PaddingLeft = UDim.new(0, 15)
 
             local ItemContainer = Instance.new("Frame", FolderFrame)
-            ItemContainer.Size = UDim2.new(1, 0, 1, -35); ItemContainer.Position = UDim2.new(0, 0, 0, 35)
-            ItemContainer.BackgroundTransparency = 1
+            ItemContainer.Size = UDim2.new(1, 0, 1, -35); ItemContainer.Position = UDim2.new(0, 0, 0, 35); ItemContainer.BackgroundTransparency = 1
             local ItemLayout = Instance.new("UIListLayout", ItemContainer)
             ItemLayout.SortOrder = Enum.SortOrder.LayoutOrder; ItemLayout.Padding = UDim.new(0, 5)
-            local CPad = Instance.new("UIPadding", ItemContainer)
-            CPad.PaddingTop = UDim.new(0, 5); CPad.PaddingBottom = UDim.new(0, 5)
+            local CPad = Instance.new("UIPadding", ItemContainer); CPad.PaddingTop = UDim.new(0, 5); CPad.PaddingBottom = UDim.new(0, 5)
 
             local isOpen = false
             FolderBtn.MouseButton1Click:Connect(function()
-                isOpen = not isOpen
-                FolderBtn.Text = TitleText .. (isOpen and "   ▲" or "   ▼")
+                isOpen = not isOpen; FolderBtn.Text = TitleText .. (isOpen and "   ▲" or "   ▼")
                 if isOpen then FolderFrame.Size = UDim2.new(1, 0, 0, 35 + ItemLayout.AbsoluteContentSize.Y + 10) else FolderFrame.Size = UDim2.new(1, 0, 0, 35) end
             end)
             ItemLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
