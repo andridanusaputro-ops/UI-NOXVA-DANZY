@@ -1,5 +1,5 @@
 -- ==========================================
--- NOXVA UI ENGINE | PREMIUM GLASS + DECAL LOGO
+-- NOXVA UI ENGINE | PREMIUM GLASS + CAPSULE FPS
 -- ==========================================
 local NoxvaLib = {}
 
@@ -21,7 +21,9 @@ function NoxvaLib:CreateWindow()
     NoxvaUI.ResetOnSpawn = false 
     if gethui then NoxvaUI.Parent = gethui() else pcall(function() NoxvaUI.Parent = CoreGui end) end
 
-    -- Container Notifikasi
+    -- ==========================================
+    -- CONTAINER NOTIFIKASI
+    -- ==========================================
     local NotifContainer = Instance.new("Frame", NoxvaUI)
     NotifContainer.Name = "NotifContainer"
     NotifContainer.Size = UDim2.new(0, 250, 1, -20)
@@ -35,7 +37,7 @@ function NoxvaLib:CreateWindow()
     NotifLayout.Padding = UDim.new(0, 10)
 
     -- ==========================================
-    -- LOGO MINIMIZE PAKE GAMBAR LU (ANTI BLANK)
+    -- LOGO MINIMIZE & CAPSULE FPS
     -- ==========================================
     local OpenLogo = Instance.new("Frame", NoxvaUI)
     OpenLogo.Size = UDim2.new(0, 50, 0, 50)
@@ -52,8 +54,7 @@ function NoxvaLib:CreateWindow()
     local LogoImage = Instance.new("ImageLabel", OpenLogo)
     LogoImage.Size = UDim2.new(1, 0, 1, 0)
     LogoImage.BackgroundTransparency = 1
-    -- INI JURUS SAKTINYA BREE
-    LogoImage.Image = "rbxthumb://type=Asset&id=10528567067&w=150&h=150" 
+    LogoImage.Image = "rbxthumb://type=Asset&id=15648362575&w=150&h=150" 
     Instance.new("UICorner", LogoImage).CornerRadius = UDim.new(1, 0)
     
     local LogoClicker = Instance.new("TextButton", OpenLogo)
@@ -61,16 +62,35 @@ function NoxvaLib:CreateWindow()
     LogoClicker.BackgroundTransparency = 1
     LogoClicker.Text = ""
 
-    local FloatingStats = Instance.new("TextLabel", OpenLogo)
-    FloatingStats.Size = UDim2.new(0, 150, 0, 20)
-    FloatingStats.Position = UDim2.new(0.5, -75, 0, -25)
+    -- BACKGROUND CAPSULE BUAT FPS & PING (Otomatis Panjang)
+    local FloatBg = Instance.new("Frame", OpenLogo)
+    FloatBg.Position = UDim2.new(0.5, 0, 0, -35)
+    FloatBg.AnchorPoint = Vector2.new(0.5, 0)
+    FloatBg.Size = UDim2.new(0, 0, 0, 24)
+    FloatBg.AutomaticSize = Enum.AutomaticSize.X -- Ngikutin panjang teks
+    FloatBg.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+    FloatBg.BackgroundTransparency = 0.15
+    Instance.new("UICorner", FloatBg).CornerRadius = UDim.new(1, 0)
+    
+    local FloatStroke = Instance.new("UIStroke", FloatBg)
+    FloatStroke.Color = Color3.fromRGB(0, 120, 255)
+    FloatStroke.Thickness = 1.5
+
+    local FloatPad = Instance.new("UIPadding", FloatBg)
+    FloatPad.PaddingLeft = UDim.new(0, 12)
+    FloatPad.PaddingRight = UDim.new(0, 12)
+
+    local FloatingStats = Instance.new("TextLabel", FloatBg)
+    FloatingStats.Size = UDim2.new(0, 0, 1, 0)
+    FloatingStats.AutomaticSize = Enum.AutomaticSize.X
     FloatingStats.BackgroundTransparency = 1
     FloatingStats.TextColor3 = Color3.fromRGB(0, 255, 150)
     FloatingStats.Font = Enum.Font.GothamBold
-    FloatingStats.TextSize = 12
-    FloatingStats.TextStrokeTransparency = 0.5
+    FloatingStats.TextSize = 11
 
+    -- ==========================================
     -- MAIN FRAME
+    -- ==========================================
     local MainFrame = Instance.new("Frame", NoxvaUI)
     MainFrame.Size = UDim2.new(0, 500, 0, 350)
     MainFrame.Position = UDim2.new(0.5, -250, 0.5, -175)
@@ -166,6 +186,7 @@ function NoxvaLib:CreateWindow()
             end
         end)
     end
+    -- HANYA LogoClicker YANG BISA DIGESER (Capsule FPS aman gak ikut keseret)
     MakeDraggable(MainFrame, TopBar)
     MakeDraggable(OpenLogo, LogoClicker)
 
@@ -496,6 +517,9 @@ function NoxvaLib:CreateWindow()
 
         return TabFunctions
     end
+
+    -- AUTO NOTIF PAS DIEKSEKUSI
+    WindowFunctions:Notify("NOXVA HUB", "Execute Success! Selamat datang.", 4)
 
     return WindowFunctions
 end
